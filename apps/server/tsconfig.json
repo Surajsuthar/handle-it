@@ -1,0 +1,3 @@
+{
+  "extends": "@handleIt/eslint-config/base.json"
+}
