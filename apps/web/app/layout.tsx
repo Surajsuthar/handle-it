@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
-
+import { ReactQueryProvider } from "@/components/providers/react-query";
 
 export const metadata: Metadata = {
   title: "Handle-it | Get Things Done",
-  description: "Handle-it helps you organize, manage, and get things done effortlessly.",
+  description:
+    "Handle-it helps you organize, manage, and get things done effortlessly.",
 };
-
-
 
 export default function RootLayout({
   children,
@@ -16,9 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen w-full">
-        {children}
-      </body>
+      <ReactQueryProvider>
+        <body className="min-h-screen w-full">{children}</body>
+      </ReactQueryProvider>
     </html>
   );
 }

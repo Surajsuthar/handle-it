@@ -14,36 +14,42 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Separator } from "@/components/ui/separator";
-import { 
-    Eye, 
-    EyeOff, 
-    MoveRight 
-} from "lucide-react";
+import { Eye, EyeOff, MoveRight } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
-
-const signInFromSchema = z.object({
-  email: z.string().email(),
-  password: z.string(),
-});
+import { signIn } from "next-auth/react";
+import { credentialsSchema } from "@/types";
 
 const Signin = () => {
+  const [error, setError] = useState<String>("");
   const [showPassword, setShowpassword] = useState<Boolean>(false);
 
-  const form = useForm<z.infer<typeof signInFromSchema>>({
-    resolver: zodResolver(signInFromSchema),
+  const form = useForm<z.infer<typeof credentialsSchema>>({
+    resolver: zodResolver(credentialsSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof signInFromSchema>) => {
+  const onSubmit = (values: z.infer<typeof credentialsSchema>) => {
     console.log("=>", values.email, values.password);
   };
 
   const handlePasswordVisibilty = () => {
     setShowpassword(!showPassword);
+  };
+
+  const handleGoogleSignIn = async () => {
+      try {
+        await signIn("google", { 
+          callbackUrl: "/dashboard", 
+          redirect: true 
+        });
+      } catch (error) {
+        // WIP
+      } finally {
+      }
   };
 
   return (
@@ -102,17 +108,19 @@ const Signin = () => {
                 )}
               />
               <Button type="submit" className="w-full cursor-pointer">
-                Sign In <MoveRight/>
+                Sign In <MoveRight />
               </Button>
             </div>
           </form>
         </Form>
         <Separator className="w-2/3" />
-        <Button 
-        className="w-full cursor-pointer"
-        >   
-            Sign up with google 
-            <Image src={'google.svg'} height={22} width={22} alt="google"/>
+        <Button
+          type="button"
+          className="w-full cursor-pointer"
+          onClick={handleGoogleSignIn}
+        >
+          Sign up with google
+          <Image src={"google.svg"} height={22} width={22} alt="google" />
         </Button>
       </section>
     </CardWrapper>
