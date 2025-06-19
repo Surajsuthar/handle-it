@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ReactQueryProvider>
-        <body className="min-h-screen w-full">{children}</body>
+        <body className="h-full w-full">{children}</body>
       </ReactQueryProvider>
     </html>
   );

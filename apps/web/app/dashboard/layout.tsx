@@ -1,21 +1,24 @@
-import { AppSidebar } from "@/components/app-sidebar"
-import { DashboardProvider } from "@/components/dashboard/dashboard-layout"
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-import React from "react"
+import { DashboardLayout } from "@/components/dashboard"
+import { Navbar } from "@/components/dashboard/navbar"
+import { DashboardProvider } from "@/components/providers/dashboard-provider"
 
-interface DashboardLayoutProps {
+
+interface LayoutProps {
   children: React.ReactNode
 }
 
-const DashboardLayout = ({
+const Layout = ({
   children
-}: DashboardLayoutProps) => {
+}: LayoutProps) => {
   return (
     <DashboardProvider>
-      <div>
-        hello
-      </div>
+      <DashboardLayout>
+        <main>
+          <Navbar/>
+          {children}
+        </main>
+      </DashboardLayout>
     </DashboardProvider>
   )
 }
-export default DashboardLayout
+export default Layout
