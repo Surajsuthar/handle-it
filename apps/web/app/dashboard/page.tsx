@@ -1,7 +1,10 @@
-export default function Home() {
+import { auth } from "@/auth"
+
+export default async function Home() {
+    const user = await auth()
     return (
         <div>
-            Hello
+            {JSON.stringify(user)}
         </div>
     )
 }   

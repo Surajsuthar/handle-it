@@ -1,6 +1,5 @@
-import { Home, Settings, User, ChevronDown } from "lucide-react";
-import Image from "next/image";
-import { Label } from "../ui/label";
+"use client"
+import { Home, Settings, User, ChevronUp } from "lucide-react";
 import { 
   DropdownMenu, 
   DropdownMenuTrigger, 
@@ -10,7 +9,9 @@ import {
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
-import { useSidebar } from "@/hooks/useSidebar";
+import { useSidebar } from "@/context/useSidebar";
+import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 interface SidebarProps {
   className?: string;
@@ -21,7 +22,9 @@ export const Sidebar = ({
 }: SidebarProps) => {
 
   const { isMobile, open } = useSidebar()
-    console.log("open",open)
+  const { data: session, status } = useSession();
+  console.log("session", session, status)
+  
   const menuItems = [
     { icon: Home, label: "Dashboard", href: "/" },
     { icon: Settings, label: "Settings", href: "/settings" },
@@ -31,7 +34,7 @@ export const Sidebar = ({
   return (
     <section className={`w-full flex flex-col justify-between h-full p-1.5 relative ${className}`}>
       <div className="h-[50px] w-full flex items-center justify-center rounded-md">
-        {isMobile && !open ? (
+        { isMobile || !open ? (
           <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
             <span className="font-black text-lg text-primary-foreground">H</span>
           </div>
@@ -48,12 +51,12 @@ export const Sidebar = ({
               <Button
                 key={item.label}
                 variant="ghost"
-                className={`w-full ${isMobile && !open ? 'justify-center px-2' : 'justify-start gap-3 px-3'} h-12 text-left cursor-pointer`}
-                title={isMobile && !open ? item.label : undefined}
+                className={`w-full ${isMobile || !open ? 'justify-center px-2' : 'justify-start gap-3 px-3'} h-12 text-left cursor-pointer`}
+                title={isMobile || !open ? item.label : undefined }
               >
-                <IconComponent className="h-6 w-6" />
-                {(!isMobile || open) && (
-                  <span className="font-medium">{item.label}</span>
+                <IconComponent className="h-8 w-8" />
+                {(isMobile || !open) || (
+                  <span className="font-bold">{item.label}</span>
                 )}
               </Button>
             );
@@ -64,35 +67,34 @@ export const Sidebar = ({
       <div className="w-full mt-auto">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              className={`h-[60px] flex w-full p-3 ${isMobile && !open ? 'justify-center' : 'justify-between'} items-center rounded-md`}
+            <button
+              className={`h-[60px] flex w-full p-3 ${isMobile || !open ? 'justify-center' : 'justify-between'} items-center cursor-pointer rounded-md`}
             >
-              {isMobile && !open ? (
+              {isMobile || !open ? (
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src="https://github.com/shadcn.png" alt="User avatar" />
+                  <AvatarImage src={session?.user?.image as string} alt="User avatar" />
                   <AvatarFallback className="font-semibold text-xs">
-                    JD
+                    {session?.user?.name ? session?.user?.name?.charAt(0) : "UK"}
                   </AvatarFallback>
                 </Avatar>
               ) : (
                 <>
                   <div className="flex items-center gap-3">
-                    <Avatar className="h-10 w-10">
-                      <AvatarImage src="/api/placeholder/40/40" alt="User avatar" />
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={session?.user?.image as string} alt="User avatar" />
                       <AvatarFallback className="font-semibold">
-                        JD
+                        {session?.user?.name ? session?.user?.name?.charAt(0) : "UK"}
                       </AvatarFallback>
                     </Avatar>
                     <div className="text-left">
-                      <p className="font-semibold text-sm">John Doe</p>
-                      <p className="text-xs">john@example.com</p>
+                      <p className="font-semibold text-sm">{session?.user?.name}</p>
+                      <p className="text-xs">{session?.user?.email}</p>
                     </div>
                   </div>
-                  <ChevronDown className="h-4 w-4" />
+                  <ChevronUp className="h-4 w-4" />
                 </>
               )}
-            </Button>
+            </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent 
             className="w-56"

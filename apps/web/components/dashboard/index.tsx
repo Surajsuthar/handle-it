@@ -1,5 +1,5 @@
 "use client"
-import { useSidebar } from "@/hooks/useSidebar"
+import { useSidebar } from "@/context/useSidebar"
 import { cn } from "@/lib/utils"
 import React from "react"
 import { Sidebar } from "../app-sidebar/sidebar-menu"
@@ -44,7 +44,7 @@ export const DashboardLayout = ({
           left: `calc(${getSidebarWidth()} + 0.875rem)`
         }}
       >
-        <div className="h-full overflow-y-auto p-2">
+        <div className="h-full overflow-y-auto overflow-x-hidden p-2">
           {children}
         </div>
       </section>

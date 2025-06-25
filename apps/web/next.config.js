@@ -4,6 +4,11 @@ import path from "path";
 
 dotenv.config({ path: path.resolve("../../.env") });
 
-const nextConfig = {};
+const nextConfig = {
+    devIndicators: false,
+    serverExternalPackages: [
+        "@handleIt/db"
+    ]
+};
 
 export default nextConfig;

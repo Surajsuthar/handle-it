@@ -1,6 +1,7 @@
 import { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
+import { credentialsSchema } from "@/types";
 
 export const authConfig: NextAuthConfig = {
   providers: [
@@ -23,6 +24,10 @@ export const authConfig: NextAuthConfig = {
         },
         async authorize(credentials,req) {
           if(!credentials.email || !credentials.password) return null
+          const validateCredentials = credentialsSchema.safeParse(credentials)
+          if(validateCredentials) {
+            // WIP
+          }
         }
       }),
     ],
