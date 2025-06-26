@@ -7,7 +7,7 @@ const authMiddleware = auth((req) => {
     const isLogged = !!req.auth
 
     // Define which routes require authentication
-    const protectedRoutes = ['/dashboard']
+    const protectedRoutes = ['/home']
     const isProtectedRoute = protectedRoutes.some(route => 
         nextUrl.pathname.startsWith(route)
     )
@@ -26,7 +26,7 @@ const authMiddleware = auth((req) => {
     const isAuthPage = authPages.includes(nextUrl.pathname)
     
     if (isLogged && isAuthPage) {
-        return NextResponse.redirect(new URL('/dashboard', nextUrl))
+        return NextResponse.redirect(new URL('/home', nextUrl))
     }
     
     return NextResponse.next()

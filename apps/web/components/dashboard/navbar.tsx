@@ -25,7 +25,7 @@ export const Navbar = () => {
                 onClick={() => setTheme("light")}
                 className=' cursor-pointer'
                 >
-                    <Sun/>
+                    { theme == "light" ? <Moon/> : <Sun/>}
                 </Button>
             </div>
        </div>

@@ -15,17 +15,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   debug: process.env.NODE_ENV === "development",
   adapter: PrismaAdapter(db),
   callbacks: {
-   async session({session , token, user}) {
-      if(token.sub && session.user) {
+    async session({ session, token }) {
+      if (token.sub && session.user) {
         session.user.id = token.sub
       }
-      if(token.role && session.user) {
-      
-      }
+      return session;
     },
-    async jwt({ token }) {
-      if(!token.sub) return token;
+    async jwt({ token, user }) {
+      // If this is the first time the JWT callback is called (user object exists)
+      if (user) {
+        token.sub = user.id;
+      }
+      
+      if (!token.sub) return token;
+      
+      // You can add additional user data to the token here
+      // For example, fetch user role or other data from database
+      // const userData = await db.user.findUnique({
+      //   where: { id: token.sub },
+      //   select: { role: true, ... }
+      // });
+      // token.role = userData?.role;
+      
       return token;
     }
-  }
+  },
 });
