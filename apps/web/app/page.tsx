@@ -2,7 +2,7 @@ import { LandingPage } from "@/components/LandingPage"
 
 const Home = () => {
   return (
-    <main className="h-full w-full">
+    <main className="min-h-screen w-full mt-2.5">
       <LandingPage/>
     </main>
   )

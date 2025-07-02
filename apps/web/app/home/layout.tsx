@@ -12,7 +12,7 @@ const Layout = ({ children }: LayoutProps) => {
     <NextAuthProvider>
       <DashboardProvider>
         <DashboardLayout>
-          <main>
+          <main className="">
             <Navbar />
             {children}
           </main>

@@ -65,4 +65,9 @@ model VerificationToken {
  
   @@id([identifier, token])
 }
+
+model wishlist {
+  id            String          @id @default(cuid())
+  email         String
+}
  
